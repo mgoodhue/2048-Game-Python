@@ -7,5 +7,3 @@ until the player combines two tiles to make the number 2048. The player uses the
 keys to move all of the existing numbers as far as possible in one direction. Each time
 the numbers are moved, a 4 or a 2 appear in a randomly chosen empty space. If the board 
 fills up with numbers before the player reaches 2048, the game is over.
-
-updated
