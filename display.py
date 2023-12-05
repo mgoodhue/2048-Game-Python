@@ -86,23 +86,27 @@ class GameBoard(tk.Frame):
         score_label.config(text=f"Score: {self.board.score}")
 
         if self.board.has_lost() and not self.loss_displayed:
+            self.loss_displayed = True
             lose_window = tk.Toplevel(self.master)
             lose_window.title("Game Over")
             label = tk.Label(lose_window, text="You Lose!", font=('SimSun', 100, 'bold'), fg='red')
             label.pack()
-            self.loss_displayed = True
+
+            # Initialize button to restart the game
             retry_button = tk.Button(lose_window, text="Restart", font=('SimSun', 25), command=lambda: [self.reset_board(), lose_window.destroy()])
             retry_button.pack()
+
+            # Initialize button to quit and close the window
             quit_button = tk.Button(lose_window, text="Quit", font=('SimSun', 25), command=lambda: self.master.destroy())
             quit_button.pack()
             
 
         if self.board.has_won() and not self.win_displayed:
+            self.win_displayed = True
             win_window = tk.Toplevel(self.master)
             win_window.title("Congratulations")
             label = tk.Label(win_window, text="You Win!", font=('SimSun', 100, 'bold'), fg='green')
             label.pack()
-            self.win_displayed = True
             continue_button = tk.Button(win_window, text="Continue", font=('SimSun', 25), command=lambda: [win_window.destroy()])
             continue_button.pack()
             retry_button = tk.Button(win_window, text="Restart", font=('SimSun', 25), command=lambda: [self.reset_board(), win_window.destroy()])
