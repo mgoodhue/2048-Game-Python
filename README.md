@@ -10,3 +10,6 @@ fills up with numbers before the player reaches 2048, the game is over.
 
 # Random Starting Grid
 ![Alt text](image.png)
+
+# How to Start the Game
+To play, run the command "python3 display.py" in the terminal
