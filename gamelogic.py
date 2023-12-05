@@ -2,11 +2,13 @@ import numpy as np
 import random
 
 class Board:
+
     SIZE = 4
 
     def __init__(self, score=0):
         self.board = self.make_board()
         self.score = score
+        self.size = Board.SIZE
 
     def make_board(self):
         board = np.zeros((4, 4), dtype=int)
@@ -57,22 +59,19 @@ class Board:
                     self.score += arr[i]
 
         else:
-            for i in range(len(arr) - 1):
-                if arr[i] == arr[i+1] and arr[i] != 0:
+            for i in range(len(arr) - 1, 0, -1):
+                if arr[i] == arr[i-1] and arr[i] != 0:
                     arr[i] *= 2
                     arr[i-1] = 0 
                     self.score += arr[i]
 
     def insta_win(self):
         self.board[0, 0] = 2048
-
-    def insta_lose(self):
-        self.board[:] = 1
     
     def move(self, direction):
         
         prev_board = np.copy(self.board)
-        for i in range(Board.SIZE):
+        for i in range(self.size):
 
             if direction == 'left':
                 to_front = True
@@ -94,9 +93,9 @@ class Board:
                 
             elif direction == 'down':
                 to_front = False
-                self.shift_zeroes(self.board[:, i], to_front)
-                self.combine(self.board[:, i], to_front)
-                self.shift_zeroes(self.board[:, i], to_front)
+                self.shift_zeroes(self.board[:, i - 1], to_front)
+                self.combine(self.board[:, i - 1], to_front)
+                self.shift_zeroes(self.board[:, i - 1], to_front)
         
         if not np.array_equal(prev_board, self.board):
             new_num = random.choice([2, 4])
@@ -106,4 +105,17 @@ class Board:
         return np.any(self.board == 2048)
 
     def has_lost(self):
-        return not np.any(self.board == 2048) and not np.any(self.board == 0)
+        if np.all(self.board != 0):
+            for i in range(self.size):
+                for j in range(self.size - 1):
+                    if self.board[i, j] == self.board[i, j + 1]:
+                        return False
+
+            for j in range(self.size):
+                for i in range(self.size - 1):
+                    if self.board[i, j] == self.board[i + 1, j]:
+                        return False
+
+            return True
+
+        return False
