@@ -89,7 +89,7 @@ class GameBoard(tk.Frame):
             self.loss_displayed = True
             lose_window = tk.Toplevel(self.master)
             lose_window.title("Game Over")
-            label = tk.Label(lose_window, text="You Lose!", font=('SimSun', 100, 'bold'), fg='red')
+            label = tk.Label(lose_window, text="Game Over", font=('SimSun', 100, 'bold'), fg='red')
             label.pack()
 
             # Initialize button to restart the game
