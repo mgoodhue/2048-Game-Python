@@ -8,8 +8,8 @@ keys to move all of the existing numbers as far as possible in one direction. Ea
 the numbers are moved, a 4 or a 2 appear in a randomly chosen empty space. If the board 
 fills up with numbers before the player reaches 2048, the game is over.
 
-# Random Starting Grid
-![Alt text](image-1.png)
+# Example Starting Screen
+![Alt text](start_screen.png)
 
 # How to Start the Game
 To play, run the command "python3 display.py" in the terminal
