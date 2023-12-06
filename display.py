@@ -17,6 +17,7 @@ color_map = {
             2048: "#5627DB"
         }
 
+
 class GameBoard(tk.Frame):
 
     def __init__(self, master=None):
@@ -38,16 +39,16 @@ class GameBoard(tk.Frame):
                 frame = tk.Frame(
                     master=self,
                     relief=tk.RAISED,
-                    borderwidth=10
+                    borderwidth=int(40/gl.Board.SIZE)
                 )
                 cell_value = self.board.board[i][j]
-                label_font_size = int((1/self.board.size) * 100)
-                label_font = tkFont.Font(family='SimSun', size=label_font_size, weight='bold', )
-                label = tk.Label(master=frame, bg="maroon", fg="white", width=6, height=3, font=label_font, text=cell_value)
+                label_font_size = int(90 / gl.Board.SIZE)
+                label_font = tkFont.Font(family='SimSun', size=label_font_size, weight='bold')
+                label = tk.Label(master=frame, bg="maroon", fg="white", width=int(1.8 * label_font_size/gl.Board.SIZE), height=int(label_font_size/gl.Board.SIZE), font=label_font, text=cell_value)
                 bg_color = color_map[cell_value]
                 fg_color = "black" if cell_value <= 4 else "white"
                 text = str(cell_value) if cell_value != 0 else ""
-                label.config(text=text, bg=bg_color, fg=fg_color, )
+                label.config(text=text, bg=bg_color, fg=fg_color)
                 frame.grid(row=i, column=j)
                 label.pack() 
 
@@ -74,7 +75,7 @@ class GameBoard(tk.Frame):
             for j in range(self.board.size):
                 label = self.grid_slaves(row=i, column=j)[0].winfo_children()[0]
                 cell_value = self.board.board[i][j]
-                if cell_value <= 2048:
+                if cell_value in color_map:
                     bg_color = color_map[cell_value]
                 else:
                     bg_color = "black"
@@ -134,6 +135,11 @@ class GameBoard(tk.Frame):
         elif event.keysym == "m":
             self.board.insta_win()
             self.update_grid()
+        elif event.keysym == "l":
+            self.board.insta_lose()
+            self.update_grid()
+        elif event.keysym == "r":
+            self.reset_board()
 
         if direction:
             self.board.move(direction)
@@ -141,7 +147,7 @@ class GameBoard(tk.Frame):
 
 window = tk.Tk()
 game_board = GameBoard(master=window)
-min_side_size = game_board.board.size * gl.Board.SIZE * 35
+min_side_size = 800
 window.minsize(min_side_size, min_side_size)
 window.geometry(f"{min_side_size}x{min_side_size}")
 game_board.place(relx=0.5, rely=0.5, anchor="center")

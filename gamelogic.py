@@ -3,7 +3,7 @@ import random
 
 class Board:
 
-    SIZE = 4
+    SIZE = int(input("Choose Board Size: "))
 
     def __init__(self, score=0):
         self.board = self.make_board()
@@ -11,7 +11,7 @@ class Board:
         self.size = Board.SIZE
 
     def make_board(self):
-        board = np.zeros((4, 4), dtype=int)
+        board = np.zeros((Board.SIZE, Board.SIZE), dtype=int)
         Board.add_val(board, 2)
         Board.add_val(board, 2)
         return board
@@ -67,6 +67,13 @@ class Board:
 
     def insta_win(self):
         self.board[0, 0] = 2048
+
+    def insta_lose(self):
+        count = 1
+        for i in range(self.size):
+            for j in range(self.size):
+                self.board[i, j] = count
+                count += 1
     
     def move(self, direction):
         
@@ -102,7 +109,7 @@ class Board:
             self.add_val(self.board, new_num)
 
     def has_won(self):
-        return np.any(self.board == 2048)
+        return np.any(self.board >= 2048)
 
     def has_lost(self):
         if np.all(self.board != 0):
