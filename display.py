@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import font as tkFont
 import gamelogic as gl
 
-color_map = {
+color_dict = {
             0: "#A7A1A0",
             2: "#F7F1F0",
             4: "#F1E4BA",
@@ -45,7 +45,7 @@ class GameBoard(tk.Frame):
                 label_font_size = int(90 / gl.Board.SIZE)
                 label_font = tkFont.Font(family='SimSun', size=label_font_size, weight='bold')
                 label = tk.Label(master=frame, bg="maroon", fg="white", width=int(1.8 * label_font_size/gl.Board.SIZE), height=int(label_font_size/gl.Board.SIZE), font=label_font, text=cell_value)
-                bg_color = color_map[cell_value]
+                bg_color = color_dict[cell_value]
                 fg_color = "black" if cell_value <= 4 else "white"
                 text = str(cell_value) if cell_value != 0 else ""
                 label.config(text=text, bg=bg_color, fg=fg_color)
@@ -75,11 +75,11 @@ class GameBoard(tk.Frame):
             for j in range(self.board.size):
                 label = self.grid_slaves(row=i, column=j)[0].winfo_children()[0]
                 cell_value = self.board.board[i][j]
-                if cell_value in color_map:
-                    bg_color = color_map[cell_value]
+                if cell_value in color_dict:
+                    bg_color = color_dict[cell_value]
                 else:
-                    bg_color = "black"
-                fg_color = "black" if cell_value <= 4 else "white"
+                    bg_color = "gray"
+                fg_color = "black" if cell_value <= 4 or cell_value >= 2048 else "white"
                 text = str(cell_value) if cell_value != 0 else ""
                 label.config(text=text, bg=bg_color, fg=fg_color)
 
