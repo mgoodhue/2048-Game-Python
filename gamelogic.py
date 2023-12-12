@@ -4,16 +4,18 @@ import random
 class Board:
 
     SIZE = int(input("Choose Board Size: "))
+    DIFFICULTY = input("Choose Difficulty(Easy/Normal/Hard):").lower()
 
-    def __init__(self, score=0):
+    def __init__(self): 
         self.board = self.make_board()
-        self.score = score
-        self.size = Board.SIZE
+        self.score = 0
+        self.size = self.SIZE
+        self.difficulty = self.DIFFICULTY
 
     def make_board(self):
         board = np.zeros((Board.SIZE, Board.SIZE), dtype=int)
-        Board.add_val(board, 2)
-        Board.add_val(board, 2)
+        self.add_val(board, 2)
+        self.add_val(board, 2)
         return board
     
     @staticmethod
@@ -74,6 +76,10 @@ class Board:
             for j in range(self.size):
                 self.board[i, j] = count
                 count += 1
+
+    def reset_board(self):
+        self.board = self.make_board()
+        self.score = 0
     
     def move(self, direction):
         
@@ -126,3 +132,55 @@ class Board:
             return True
 
         return False
+
+
+class BoardEasy(Board):
+
+    def __init__(self):
+        super().__init__()
+
+    def clear_board(self):
+        max_value = np.max(self.board)
+        self.board = np.zeros((Board.SIZE, Board.SIZE), dtype=int)
+        self.board[0, 0] = max_value
+
+class BoardHard(Board):
+
+    def __init__(self):
+        super().__init__()
+
+    def move(self, direction):
+        
+        prev_board = np.copy(self.board)
+        for i in range(self.size):
+
+            if direction == 'left':
+                to_front = True
+                self.shift_zeroes(self.board[i, :], to_front)
+                self.combine(self.board[i, :], to_front)
+                self.shift_zeroes(self.board[i, :], to_front)
+
+            elif direction == 'right':
+                to_front = False
+                self.shift_zeroes(self.board[i, :], to_front)
+                self.combine(self.board[i, :], to_front)
+                self.shift_zeroes(self.board[i, :], to_front)
+                
+            elif direction == 'up':
+                to_front = True
+                self.shift_zeroes(self.board[:, i], to_front)
+                self.combine(self.board[:, i], to_front)
+                self.shift_zeroes(self.board[:, i], to_front)
+                
+            elif direction == 'down':
+                to_front = False
+                self.shift_zeroes(self.board[:, i - 1], to_front)
+                self.combine(self.board[:, i - 1], to_front)
+                self.shift_zeroes(self.board[:, i - 1], to_front)
+        
+        if not np.array_equal(prev_board, self.board):
+            new_num = random.choice([2, 4])
+            self.add_val(self.board, new_num)
+            if random.randint(0, 25) == 0:
+                self.add_val(self.board, new_num)
+    
