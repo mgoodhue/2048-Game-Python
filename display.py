@@ -62,7 +62,7 @@ class GameBoard(tk.Frame):
                 cell_value = self.board.board[i][j]
                 number = str(cell_value) if cell_value != 0 else ""
 
-                label_font_size = int(90 / self.board.size)
+                label_font_size = int(110 / self.board.size)
                 cell_size = int(35 / self.board.size)
                 label_font = tkFont.Font(
                     family='SimSun', 
