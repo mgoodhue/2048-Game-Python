@@ -10,9 +10,9 @@ fills up with numbers before the player reaches 2048, the game is over.
 
 # Difficulties
 The game comes with three difficulties:
-    - Easy
-    - Normal
-    - Hard
+- Easy
+- Normal
+- Hard
 
 Easy mode is impossible to lose and allows the player to clear all but the highest value
 and two descending values from the board.
