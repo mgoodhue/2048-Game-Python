@@ -33,5 +33,6 @@ just one number appearing.
 ![Alt text](game_over_screen.png)
 
 # How to Start the Game
-To play, run the command "python3 display.py" in the terminal. The user must input the game
-difficulty into the terminal, which will start the game in the display window.
+To play, run the command "python3 display.py" in the terminal. The user may need to 
+include the file address in front of "display.py". The user must input the game
+difficulty into the terminal, which will start the game in the display window. 
