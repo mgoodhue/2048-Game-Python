@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import font as tkFont
 import gamelogic as gl
 
+# List of color codes for different numbers
 color_dict = {
             0: "#A7A1A0",
             2: "#F7F1F0",
@@ -17,15 +18,15 @@ color_dict = {
             2048: "#5627DB"
         }
 
-
+# Class to represent display of game
 class GameBoard(tk.Frame):
 
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.master.title('2048')
         self.master.bind("<Key>", self.key_event)
-        self.difficulty = gl.Board.DIFFICULTY
-        self.rules = "Press R to reset Board"
+        self.rules = "Press R to reset board\nPress O to quit"
+        self.difficulty = input("Please choose difficulty (Easy/Normal/Hard): ").lower()
         if self.difficulty == "easy":
             self.board = gl.BoardEasy()
             self.rules += "\nPress C to clean up board\n"
@@ -33,6 +34,7 @@ class GameBoard(tk.Frame):
             self.board = gl.Board()
         elif self.difficulty == "hard":
             self.board = gl.BoardHard()
+            self.rules += "\nMultiple numbers may\n appear at once!\n"
         else:
             raise ValueError("Difficulty must be Easy/Normal/Hard")
         
@@ -50,7 +52,7 @@ class GameBoard(tk.Frame):
                 frame = tk.Frame(
                     master=self,
                     relief=tk.RAISED,
-                    borderwidth=int(40/self.board.size)
+                    borderwidth=int(50/self.board.size)
                 )
                 cell_value = self.board.board[i][j]
                 number = str(cell_value) if cell_value != 0 else ""
@@ -65,8 +67,7 @@ class GameBoard(tk.Frame):
                     master=frame,
                     width=cell_size,
                     height=int(cell_size / 1.8),
-                    font=label_font,
-                    text=number
+                    font=label_font
                 )
                 bg_color = color_dict[cell_value]
                 fg_color = "black" if cell_value <= 4 else "white"
@@ -105,7 +106,7 @@ class GameBoard(tk.Frame):
 
         self.rowconfigure(self.board.size, weight=1)
         # Side Panel
-        side_panel = tk.Frame(self, bg='lightgray', relief=tk.SUNKEN)
+        side_panel = tk.Frame(self, bg='lightgray', relief=tk.SUNKEN, borderwidth=10, highlightcolor="white")
         side_panel.grid(row=0, column=self.board.size, rowspan=self.board.size + 1, sticky='ns')
 
         rules_label = tk.Label(side_panel, text=self.rules, font=('SimSun', 25), bg='lightgray')
@@ -231,7 +232,7 @@ class GameBoard(tk.Frame):
             self.board.clear_board()
             self.update_grid()
 
-        elif event.keysym == "escape":
+        elif event.keysym == "o":
             self.master.destroy()
 
         if direction:
