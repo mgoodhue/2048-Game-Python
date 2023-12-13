@@ -10,6 +10,7 @@ fills up with numbers before the player reaches 2048, the game is over.
 
 # Difficulties
 The game comes with three difficulties:
+
 - Easy
 - Normal
 - Hard
