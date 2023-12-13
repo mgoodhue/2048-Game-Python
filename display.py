@@ -29,7 +29,7 @@ class GameBoard(tk.Frame):
         self.difficulty = input("Please choose difficulty (Easy/Normal/Hard): ").lower()
         if self.difficulty == "easy":
             self.board = gl.BoardEasy()
-            self.rules += "\nPress C to clean up board\n"
+            self.rules += "\nPress C to clear the board\nif you're stuck"
         elif self.difficulty == "normal":
             self.board = gl.Board()
         elif self.difficulty == "hard":
@@ -44,7 +44,12 @@ class GameBoard(tk.Frame):
 
 
     def draw_grid(self):
-
+        """
+        Draws the game onto a correctly-sized window 
+        with a correctly-sized board.
+        Also creates a scoreboard, difficulty display,
+        and a side panel with the rules.
+        """
         for i in range(self.board.size):
             self.columnconfigure(i, weight=1)
             self.rowconfigure(i, weight=1)
@@ -114,8 +119,14 @@ class GameBoard(tk.Frame):
                    
 
     def update_grid(self):
+        """
+        Modifies the display of the board depending on the 
+        way that the board is modified by a move. Displays a
+        win or loss screen if the player has won or lost.
+        """
         lose_window = None
         win_window = None
+        # Update grid to correct board state and display
         for i in range(self.board.size):
             for j in range(self.board.size):
                 grid_nums = self.grid_slaves(row=i, column=j)[0].winfo_children()[0]
@@ -131,6 +142,7 @@ class GameBoard(tk.Frame):
         score_label = self.grid_slaves(row=self.board.size, column=0)[0].winfo_children()[0]
         score_label.config(text=f"Score: {self.board.score}")
 
+        # Display loss screen
         if self.board.has_lost() and not self.loss_displayed and self.difficulty != "easy":
             self.loss_displayed = True
             lose_window = tk.Toplevel(self.master)
@@ -162,6 +174,7 @@ class GameBoard(tk.Frame):
                 command=lambda: self.master.destroy())
             quit_button.pack()
 
+        # Display win screen
         if self.board.has_won() and not self.win_displayed:
             self.win_displayed = True
             win_window = tk.Toplevel(self.master)
@@ -198,16 +211,25 @@ class GameBoard(tk.Frame):
             quit_button.pack()
 
     def key_event(self, event):
+        """
+        Handles user input directions for moves.
+        Also supports additional functions attached 
+        to specific keys.
+        """
         direction = ""
+        # Move up
         if event.keysym == "Up":
             direction = "up"
 
+        # Move down
         elif event.keysym == "Down":
             direction = "down"
 
+        # Move left
         elif event.keysym == "Left":
             direction = "left"
 
+        # Move right
         elif event.keysym == "Right":
             direction = "right"
 
@@ -228,17 +250,21 @@ class GameBoard(tk.Frame):
             self.loss_displayed = False
             self.update_grid()
 
+        # Clear the board if the difficulty is easy
         elif event.keysym == "c" and self.difficulty == "easy":
             self.board.clear_board()
             self.update_grid()
 
+        # Close the game window
         elif event.keysym == "o":
             self.master.destroy()
 
+        # Modify the board according to the input direction
         if direction:
             self.board.move(direction)
             self.update_grid()
 
+# Methods to create game window
 window = tk.Tk()
 game_board = GameBoard(master=window)
 min_height = 800
