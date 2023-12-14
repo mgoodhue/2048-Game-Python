@@ -36,3 +36,5 @@ just one number appearing.
 To play, run the command "python display.py" in the terminal. The user may need to 
 include the file address in front of "display.py". The user must input the game
 difficulty into the terminal, which will start the game in the display window. 
+The user should have Python and NumPy installed for the game to work. 
+NumPy can be installed by typing "pip install numpy" in the terminal.
